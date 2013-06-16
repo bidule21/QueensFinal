@@ -1,0 +1,12 @@
+﻿@model IEnumerable<QueensFinal.Models.Competition>
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+@foreach (var competition in Model)
+{
+    <div>
+        <h4>@competition.Name</h4>
+    </div>
+}
