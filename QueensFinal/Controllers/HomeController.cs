@@ -9,7 +9,7 @@ namespace QueensFinal.Controllers
 {
 	public class HomeController : Controller
 	{
-		QueensFinalDb _db = new QueensFinalDb();
+		readonly QueensFinalDb _db = new QueensFinalDb();
 
 		public ActionResult Index()
 		{
