@@ -1,0 +1,84 @@
+﻿@model QueensFinal.Models.Competitor
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Competitor</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.BroughtForwardPoints)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.BroughtForwardPoints)
+            @Html.ValidationMessageFor(model => model.BroughtForwardPoints)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.BroughtForwardVs)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.BroughtForwardVs)
+            @Html.ValidationMessageFor(model => model.BroughtForwardVs)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.x900Sighter1Converted)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.x900Sighter1Converted)
+            @Html.ValidationMessageFor(model => model.x900Sighter1Converted)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.x900Sighter2Converted)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.x900Sighter2Converted)
+            @Html.ValidationMessageFor(model => model.x900Sighter2Converted)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.x1000Sighter1Converted)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.x1000Sighter1Converted)
+            @Html.ValidationMessageFor(model => model.x1000Sighter1Converted)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.x1000Sighter2Converted)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.x1000Sighter2Converted)
+            @Html.ValidationMessageFor(model => model.x1000Sighter2Converted)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

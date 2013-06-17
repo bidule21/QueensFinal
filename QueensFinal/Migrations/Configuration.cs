@@ -20,7 +20,7 @@ namespace QueensFinal.Migrations
 			context.Competitions.AddOrUpdate(competition => competition.Name,
 				new Competition
 				{
-					Name = "Imperial 2013",
+					Name = "Queen's Final 2013",
 					StartDateTime = new DateTime(2013, 7, 20, 14, 0, 0),
 					Competitors = new Collection<Competitor>
 						{

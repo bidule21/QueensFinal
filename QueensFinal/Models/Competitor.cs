@@ -8,6 +8,7 @@ namespace QueensFinal.Models
 	public class Competitor
 	{
 		public int Id { get; set; }
+		public int IndexNumber { get; set; }
 		public string Name { get; set; }
 		public int BroughtForwardPoints { get; set; }
 		public int BroughtForwardVs { get; set; }
