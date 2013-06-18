@@ -7,6 +7,6 @@
 @foreach (var competition in Model)
 {
     <div>
-        <h4>@competition.Name</h4>
+        <h4>@Html.ActionLink(competition.Name, "Details", "Competition", new { name = competition.Name }, null)</h4>
     </div>
 }

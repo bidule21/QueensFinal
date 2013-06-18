@@ -24,9 +24,9 @@ namespace QueensFinal.Controllers
         //
         // GET: /Competition/Details/5
 
-        public ActionResult Details(int id = 0)
+        public ActionResult Details(string name)
         {
-            Competition competition = db.Competitions.Find(id);
+            Competition competition = db.Competitions.Single(c => c.Name == name);
             if (competition == null)
             {
                 return HttpNotFound();
