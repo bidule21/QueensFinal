@@ -1,5 +1,5 @@
 using System.Collections.ObjectModel;
-using QueensFinal.Models;
+using QueensFinal.Model;
 
 namespace QueensFinal.Migrations
 {
@@ -17,20 +17,21 @@ namespace QueensFinal.Migrations
 
 		protected override void Seed(QueensFinalDb context)
 		{
+			var random = new Random();
+
 			context.Competitions.AddOrUpdate(competition => competition.Name,
 				new Competition
 				{
 					Name = "Queen's Final 2013",
 					StartDateTime = new DateTime(2013, 7, 20, 14, 0, 0),
-					Competitors = new Collection<Competitor>
-						{
-							new Competitor
-								{
-									Name = "Mr TW Hunter",
-									BroughtForwardPoints = 147,
-									BroughtForwardVs = 22
-								}
-						}
+					Competitors = Enumerable.Range(1, 100).Select(x => 
+						new Competitor
+							{
+								Name = "Competitor" + x,
+								BroughtForwardPoints = random.Next(147,151),
+								BroughtForwardVs = random.Next(12,26)
+							}
+					).ToList()
 				}
 			);
 		}

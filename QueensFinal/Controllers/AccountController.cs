@@ -9,7 +9,7 @@ using DotNetOpenAuth.AspNet;
 using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
 using QueensFinal.Filters;
-using QueensFinal.Models;
+using QueensFinal.Model;
 
 namespace QueensFinal.Controllers
 {

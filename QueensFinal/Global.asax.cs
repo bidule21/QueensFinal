@@ -16,6 +16,9 @@ namespace QueensFinal
 	{
 		protected void Application_Start()
 		{
+			// Register the default hubs route: ~/signalr
+			RouteTable.Routes.MapHubs();
+
 			AreaRegistration.RegisterAllAreas();
 
 			WebApiConfig.Register(GlobalConfiguration.Configuration);

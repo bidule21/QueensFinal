@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace QueensFinal.Models
+namespace QueensFinal.Model
 {
 	public class Competition
 	{

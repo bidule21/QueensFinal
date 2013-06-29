@@ -1,4 +1,4 @@
-﻿@model QueensFinal.Models.Competition
+﻿@model QueensFinal.Model.Competition
 
 @{
     ViewBag.Title = "Details";
@@ -30,11 +30,48 @@
 <table>
     <tr>
         <th>Name</th>
+        <th>S1</th>
+        <th>S2</th>
+        <th>1</th>
+        <th>2</th>
     </tr>
     @foreach (var competitor in Model.Competitors)
     {
         <tr>
             <td>@Html.DisplayFor(x => competitor.Name)</td>
+            <td id="competitor@(competitor.Id)shotS1"></td>
+            <td id="competitor@(competitor.Id)shotS2"></td>
+            <td id="competitor@(competitor.Id)shot1"></td>
+            <td id="competitor@(competitor.Id)shot2"></td>
+            <td id="competitor@(competitor.Id)shot3"></td>
+            <td id="competitor@(competitor.Id)shot4"></td>
+            <td id="competitor@(competitor.Id)shot5"></td>
+            <td id="competitor@(competitor.Id)shot6"></td>
+            <td id="competitor@(competitor.Id)shot7"></td>
+            <td id="competitor@(competitor.Id)shot8"></td>
+            <td id="competitor@(competitor.Id)shot9"></td>
+            <td id="competitor@(competitor.Id)shot10"></td>
+            <td id="competitor@(competitor.Id)shot11"></td>
+            <td id="competitor@(competitor.Id)shot12"></td>
+            <td id="competitor@(competitor.Id)shot13"></td>
+            <td id="competitor@(competitor.Id)shot14"></td>
+            <td id="competitor@(competitor.Id)shot15"></td>
         </tr>
     }
 </table>
+
+
+@section scripts
+{
+    <script src="~/Scripts/jquery.signalR-1.1.2.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script>
+        $(function() {
+            var hub = $.connection.queensFinalHub;
+            hub.client.RegisterShot = function(competitorId, shotNumber, score) {
+                $('#competitor' + competitorId + 'shot' + shotNumber).html(score);
+            };
+            $.connection.hub.start();
+        });
+    </script>
+}

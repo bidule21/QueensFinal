@@ -5,7 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using QueensFinal.Models;
+using QueensFinal.Model;
 
 namespace QueensFinal.Controllers
 {
@@ -26,7 +26,7 @@ namespace QueensFinal.Controllers
 
         public ActionResult Details(string name)
         {
-            Competition competition = db.Competitions.Single(c => c.Name == name);
+            Competition competition = db.Competitions.Include(c => c.Competitors).Single(c => c.Name == name);
             if (competition == null)
             {
                 return HttpNotFound();
