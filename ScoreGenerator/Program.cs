@@ -15,12 +15,14 @@ namespace ScoreGenerator
 
 		static void Main()
 		{
-			var hubConnection = new HubConnection("http://localhost:59570/");
+			var hubConnection = new HubConnection("http://localhost.fiddler:59570/");
 			hubConnection.TraceLevel = TraceLevels.All;
 			hubConnection.TraceWriter = Console.Out;
 			var hubProxy = hubConnection.CreateHubProxy("QueensFinalHub");
 
 			hubConnection.Start().Wait();
+
+			Thread.Sleep(10000);
 
 			var competition = hubProxy.Invoke<Competition>("GetCompetition", "Queen's Final 2013").Result;
 
@@ -31,24 +33,28 @@ namespace ScoreGenerator
 					{
 						Thread.Sleep(1000 * Random.Next(45));
 						
+						Console.WriteLine("RegisterScore - CompetitorId {0}, Shot {1}", competitor.Id, "S" + i);
+
 						// RegisterScore(int competitionId, int competitorId, string shotNumber, string score)
 						hubProxy.Invoke("RegisterScore",
 							competition.Id,
 							competitor.Id,
 							"S" + i,
-							(Score)Scores.GetValue(Random.Next(Scores.Length)));
+							(Score)Scores.GetValue(Random.Next(Scores.Length))).Wait();
 					}
 
 					for (int i = 1; i <= 15; i++)
 					{
 						Thread.Sleep(1000 * Random.Next(45));
 
+						Console.WriteLine("RegisterScore - CompetitorId {0}, Shot {1}", competitor.Id, i);
+
 						// RegisterScore(int competitionId, int competitorId, string shotNumber, string score)
 						hubProxy.Invoke("RegisterScore",
 							competition.Id,
 							competitor.Id,
 							i.ToString(CultureInfo.InvariantCulture),
-							(Score)Scores.GetValue(Random.Next(Scores.Length)));
+							(Score)Scores.GetValue(Random.Next(Scores.Length))).Wait();
 					}
 				}
 			);

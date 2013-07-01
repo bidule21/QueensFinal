@@ -10,68 +10,143 @@
     <legend>Competition</legend>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Name)
+        @Html.DisplayNameFor(model => model.Name)
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Name)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.StartDateTime)
+        @Html.DisplayNameFor(model => model.StartDateTime)
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.StartDateTime)
     </div>
 </fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
-<table>
-    <tr>
-        <th>Name</th>
-        <th>S1</th>
-        <th>S2</th>
-        <th>1</th>
-        <th>2</th>
-    </tr>
+
+<input type="button" id="btnSort" value="Sort"/>
+
+<style>
+    td
+    {
+        border: 1px solid grey;
+    }
+
+    #Grid .mix
+    {
+        opacity: 0;
+        display: none;
+    }
+</style>
+
+<div id="Grid">
     @foreach (var competitor in Model.Competitors)
     {
-        <tr>
-            <td>@Html.DisplayFor(x => competitor.Name)</td>
-            <td id="competitor@(competitor.Id)shotS1"></td>
-            <td id="competitor@(competitor.Id)shotS2"></td>
-            <td id="competitor@(competitor.Id)shot1"></td>
-            <td id="competitor@(competitor.Id)shot2"></td>
-            <td id="competitor@(competitor.Id)shot3"></td>
-            <td id="competitor@(competitor.Id)shot4"></td>
-            <td id="competitor@(competitor.Id)shot5"></td>
-            <td id="competitor@(competitor.Id)shot6"></td>
-            <td id="competitor@(competitor.Id)shot7"></td>
-            <td id="competitor@(competitor.Id)shot8"></td>
-            <td id="competitor@(competitor.Id)shot9"></td>
-            <td id="competitor@(competitor.Id)shot10"></td>
-            <td id="competitor@(competitor.Id)shot11"></td>
-            <td id="competitor@(competitor.Id)shot12"></td>
-            <td id="competitor@(competitor.Id)shot13"></td>
-            <td id="competitor@(competitor.Id)shot14"></td>
-            <td id="competitor@(competitor.Id)shot15"></td>
-        </tr>
+        <div class="mix" id="competitor@(competitor.Id)" data-pointsoff="0" >
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>S1</th>
+                    <th>S2</th>
+                    <th>1</th>
+                    <th>2</th>
+                </tr>
+                <tr>
+                    <td>@Html.DisplayFor(x => competitor.Name)</td>
+                    <td id="competitor@(competitor.Id)shotS1"></td>
+                    <td id="competitor@(competitor.Id)shotS2"></td>
+                    <td id="competitor@(competitor.Id)shot1"></td>
+                    <td id="competitor@(competitor.Id)shot2"></td>
+                    <td id="competitor@(competitor.Id)shot3"></td>
+                    <td id="competitor@(competitor.Id)shot4"></td>
+                    <td id="competitor@(competitor.Id)shot5"></td>
+                    <td id="competitor@(competitor.Id)shot6"></td>
+                    <td id="competitor@(competitor.Id)shot7"></td>
+                    <td id="competitor@(competitor.Id)shot8"></td>
+                    <td id="competitor@(competitor.Id)shot9"></td>
+                    <td id="competitor@(competitor.Id)shot10"></td>
+                    <td id="competitor@(competitor.Id)shot11"></td>
+                    <td id="competitor@(competitor.Id)shot12"></td>
+                    <td id="competitor@(competitor.Id)shot13"></td>
+                    <td id="competitor@(competitor.Id)shot14"></td>
+                    <td id="competitor@(competitor.Id)shot15"></td>
+                    
+                    <td><input type="text" id="competitor@(competitor.Id)PointsOff" value="0"/></td>
+                </tr>
+            </table>
+            
+        </div>
     }
-</table>
-
+</div>
 
 @section scripts
 {
+    <script src="~/Scripts/jquery.mixitup.js"></script>
     <script src="~/Scripts/jquery.signalR-1.1.2.js"></script>
+    <script src="~/Scripts/jquery-ui-1.8.24.js"></script>
     <script src="~/signalr/hubs"></script>
     <script>
-        $(function() {
+        function ScoreNameToNumber(score) {
+            switch (score) {
+                case "Zero":
+                    return "0";
+                case "One":
+                    return "1";
+                case "Two":
+                    return "2";
+                case "Three":
+                    return "3";
+                case "Four":
+                    return "4";
+                case "Five":
+                    return "5";
+                case "V":
+                    return "V";
+                default:
+                    return "";
+            }
+        }
+
+        function PointsOffFromScore(score) {
+            if (score == "V") {
+                return 0;
+            }
+            return 5 - parseInt(score, 10);
+        }
+
+        $(function () {
             var hub = $.connection.queensFinalHub;
-            hub.client.RegisterShot = function(competitorId, shotNumber, score) {
-                $('#competitor' + competitorId + 'shot' + shotNumber).html(score);
+            hub.client.RegisterShot = function (competitorId, shotNumber, score) {
+                var scoreNumber = ScoreNameToNumber(score);
+
+                var pointsOff = $('#competitor' + competitorId + 'PointsOff');
+                pointsOff.val(parseInt(pointsOff.val(), 10) + PointsOffFromScore(scoreNumber));
+
+                var pointsOffAttr = $('#competitor' + competitorId);
+                pointsOffAttr.attr("data-pointsoff", parseInt(pointsOffAttr.attr("data-pointsoff"), 10) + PointsOffFromScore(scoreNumber));
+
+                var cell = $('#competitor' + competitorId + 'shot' + shotNumber);
+                cell.html(scoreNumber);
+                cell.effect("highlight");
+
+                //var position = CalculateNewPosition(competitorId);
+
+                //MoveToNewPosition(position);
+
+                $('#Grid').mixitup('sort', ['data-pointsoff', 'desc']);
             };
             $.connection.hub.start();
+
+            $('#Grid').mixitup();
+
+            $('#btnSort').click(function() {
+                $('#Grid').mixitup('sort', ['data-pointsoff', 'desc']);
+            });
+
         });
     </script>
 }
