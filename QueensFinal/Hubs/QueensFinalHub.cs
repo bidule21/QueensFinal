@@ -87,7 +87,7 @@ namespace QueensFinal.Hubs
 				
 			}
 
-			Clients.All.RegisterShot(registerCardId.ToString(CultureInfo.InvariantCulture), shotNumber, score.ToString());
+			Clients.All.RegisterShot(registerCardId, distance, shotNumber, score.ToString());
 		}
 
 		public void ConvertBothSighters(int competitionId, int registerCardId, string distance)
