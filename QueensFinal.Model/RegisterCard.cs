@@ -5,11 +5,11 @@ using System.Text;
 
 namespace QueensFinal.Model
 {
-	public class Competitor
+	public class RegisterCard
 	{
 		public int Id { get; set; }
-		public int IndexNumber { get; set; }
-		public string Name { get; set; }
+		public int CompetitorIndexNumber { get; set; }
+		public string CompetitorName { get; set; }
 		public int BroughtForwardPoints { get; set; }
 		public int BroughtForwardVs { get; set; }
 		

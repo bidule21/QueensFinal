@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueensFinal", "QueensFinal\QueensFinal.csproj", "{09010A37-6157-40A2-9320-DD6EE5E693B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScoreGenerator", "ScoreGenerator\ScoreGenerator.csproj", "{ADC17F8A-9C34-4B34-BE75-1FFE656DAA1A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueensFinal.Model", "QueensFinal.Model\QueensFinal.Model.csproj", "{F35E5C19-4186-4964-96EE-2C8DE2AE318A}"
 EndProject
 Global
@@ -17,10 +15,6 @@ Global
 		{09010A37-6157-40A2-9320-DD6EE5E693B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09010A37-6157-40A2-9320-DD6EE5E693B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09010A37-6157-40A2-9320-DD6EE5E693B7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ADC17F8A-9C34-4B34-BE75-1FFE656DAA1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ADC17F8A-9C34-4B34-BE75-1FFE656DAA1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ADC17F8A-9C34-4B34-BE75-1FFE656DAA1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ADC17F8A-9C34-4B34-BE75-1FFE656DAA1A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F35E5C19-4186-4964-96EE-2C8DE2AE318A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F35E5C19-4186-4964-96EE-2C8DE2AE318A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F35E5C19-4186-4964-96EE-2C8DE2AE318A}.Release|Any CPU.ActiveCfg = Release|Any CPU

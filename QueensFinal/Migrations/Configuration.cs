@@ -24,10 +24,10 @@ namespace QueensFinal.Migrations
 				{
 					Name = "Queen's Final 2013",
 					StartDateTime = new DateTime(2013, 7, 20, 14, 0, 0),
-					Competitors = Enumerable.Range(1, 100).Select(x => 
-						new Competitor
+					RegisterCards = Enumerable.Range(1, 100).Select(x => 
+						new RegisterCard
 							{
-								Name = "Competitor" + x,
+								CompetitorName = "Competitor" + x,
 								BroughtForwardPoints = random.Next(147,151),
 								BroughtForwardVs = random.Next(12,26)
 							}

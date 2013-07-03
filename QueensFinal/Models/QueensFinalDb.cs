@@ -14,6 +14,6 @@ namespace QueensFinal.Model
 			Configuration.ProxyCreationEnabled = false;
 		}
 		public DbSet<Competition> Competitions { get; set; }
-		public DbSet<Competitor> Competitors { get; set; }
+		public DbSet<RegisterCard> RegisterCards { get; set; }
 	}
 }

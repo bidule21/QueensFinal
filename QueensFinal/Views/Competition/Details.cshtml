@@ -44,9 +44,9 @@
 </style>
 
 <div id="Grid">
-    @foreach (var competitor in Model.Competitors)
+    @foreach (var registerCard in Model.RegisterCards)
     {
-        <div class="mix" id="competitor@(competitor.Id)" data-pointsoff="0" >
+        <div class="mix" id="registerCard@(registerCard.Id)" data-pointsoff="0" >
             <table>
                 <tr>
                     <th>Name</th>
@@ -56,26 +56,26 @@
                     <th>2</th>
                 </tr>
                 <tr>
-                    <td>@Html.DisplayFor(x => competitor.Name)</td>
-                    <td id="competitor@(competitor.Id)shotS1"></td>
-                    <td id="competitor@(competitor.Id)shotS2"></td>
-                    <td id="competitor@(competitor.Id)shot1"></td>
-                    <td id="competitor@(competitor.Id)shot2"></td>
-                    <td id="competitor@(competitor.Id)shot3"></td>
-                    <td id="competitor@(competitor.Id)shot4"></td>
-                    <td id="competitor@(competitor.Id)shot5"></td>
-                    <td id="competitor@(competitor.Id)shot6"></td>
-                    <td id="competitor@(competitor.Id)shot7"></td>
-                    <td id="competitor@(competitor.Id)shot8"></td>
-                    <td id="competitor@(competitor.Id)shot9"></td>
-                    <td id="competitor@(competitor.Id)shot10"></td>
-                    <td id="competitor@(competitor.Id)shot11"></td>
-                    <td id="competitor@(competitor.Id)shot12"></td>
-                    <td id="competitor@(competitor.Id)shot13"></td>
-                    <td id="competitor@(competitor.Id)shot14"></td>
-                    <td id="competitor@(competitor.Id)shot15"></td>
+                    <td>@Html.DisplayFor(x => registerCard.CompetitorName)</td>
+                    <td id="registerCard@(registerCard.Id)shotS1"></td>
+                    <td id="registerCard@(registerCard.Id)shotS2"></td>
+                    <td id="registerCard@(registerCard.Id)shot1"></td>
+                    <td id="registerCard@(registerCard.Id)shot2"></td>
+                    <td id="registerCard@(registerCard.Id)shot3"></td>
+                    <td id="registerCard@(registerCard.Id)shot4"></td>
+                    <td id="registerCard@(registerCard.Id)shot5"></td>
+                    <td id="registerCard@(registerCard.Id)shot6"></td>
+                    <td id="registerCard@(registerCard.Id)shot7"></td>
+                    <td id="registerCard@(registerCard.Id)shot8"></td>
+                    <td id="registerCard@(registerCard.Id)shot9"></td>
+                    <td id="registerCard@(registerCard.Id)shot10"></td>
+                    <td id="registerCard@(registerCard.Id)shot11"></td>
+                    <td id="registerCard@(registerCard.Id)shot12"></td>
+                    <td id="registerCard@(registerCard.Id)shot13"></td>
+                    <td id="registerCard@(registerCard.Id)shot14"></td>
+                    <td id="registerCard@(registerCard.Id)shot15"></td>
                     
-                    <td><input type="text" id="competitor@(competitor.Id)PointsOff" value="0"/></td>
+                    <td><input type="text" id="registerCard@(registerCard.Id)PointsOff" value="0"/></td>
                 </tr>
             </table>
             
@@ -120,20 +120,20 @@
 
         $(function () {
             var hub = $.connection.queensFinalHub;
-            hub.client.RegisterShot = function (competitorId, shotNumber, score) {
+            hub.client.RegisterShot = function (registerCardId, shotNumber, score) {
                 var scoreNumber = ScoreNameToNumber(score);
 
-                var pointsOff = $('#competitor' + competitorId + 'PointsOff');
+                var pointsOff = $('#registerCard' + registerCardId + 'PointsOff');
                 pointsOff.val(parseInt(pointsOff.val(), 10) + PointsOffFromScore(scoreNumber));
 
-                var pointsOffAttr = $('#competitor' + competitorId);
+                var pointsOffAttr = $('#registerCard' + registerCardId);
                 pointsOffAttr.attr("data-pointsoff", parseInt(pointsOffAttr.attr("data-pointsoff"), 10) + PointsOffFromScore(scoreNumber));
 
-                var cell = $('#competitor' + competitorId + 'shot' + shotNumber);
+                var cell = $('#registerCard' + registerCardId + 'shot' + shotNumber);
                 cell.html(scoreNumber);
                 cell.effect("highlight");
 
-                //var position = CalculateNewPosition(competitorId);
+                //var position = CalculateNewPosition(registerCardId);
 
                 //MoveToNewPosition(position);
 

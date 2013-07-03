@@ -13,25 +13,86 @@ namespace QueensFinal.Hubs
 	public class QueensFinalHub : Hub
 	{
 
-		public Competition GetCompetition(string competitionName)
+		public int CreateCompetition(string competitionName)
 		{
 			using (var db = new QueensFinalDb())
 			{
-				var competition = db.Competitions.Include(c => c.Competitors).FirstOrDefault(c => c.Name == competitionName);
-				if (competition == null)
-				{
-					throw new Exception(String.Format("Could not find competition named {0}", competitionName));
-				}
+				var competition = new Competition();
+				competition.Name = competitionName;
+				competition.StartDateTime = DateTime.Now;
 
-				return competition;
+				db.Competitions.Add(competition);
+				db.SaveChanges();
+
+				return competition.Id;
 			}
 		}
 
-		public void RegisterScore(int competitionId, int competitorId, string shotNumber, Score score)
+		public int AddRegisterCard(
+			int competitionId,
+			string competitorName,
+			int competitorIndexNumber,
+			int broughtForwardPoints,
+			int broughtForwardVs)
 		{
-			Debug.WriteLine("Competition: {0}, Competitor: {1}, Shot Number: {2}, Score: {3}",
-				competitionId, competitorId, shotNumber, score);
-			Clients.All.RegisterShot(competitorId.ToString(CultureInfo.InvariantCulture), shotNumber, score.ToString());
+			using (var db = new QueensFinalDb())
+			{
+				var registerCard = new RegisterCard
+				{
+					CompetitorName = competitorName,
+					CompetitorIndexNumber = competitorIndexNumber,
+					BroughtForwardPoints = broughtForwardPoints,
+					BroughtForwardVs = broughtForwardVs
+				};
+
+				var competition = db.Competitions.Include(c => c.RegisterCards).Single(c => c.Id == competitionId);
+				competition.RegisterCards.Add(registerCard);
+				db.SaveChanges();
+
+				return registerCard.Id;
+			}
+		}
+
+		//public Competition GetCompetition(string competitionName)
+		//{
+		//	using (var db = new QueensFinalDb())
+		//	{
+		//		var competition = db.Competitions.Include(c => c.RegisterCards).FirstOrDefault(c => c.Name == competitionName);
+		//		if (competition == null)
+		//		{
+		//			throw new Exception(String.Format("Could not find competition named {0}", competitionName));
+		//		}
+
+		//		return competition;
+		//	}
+		//}
+
+		public void AddShot(int competitionId, int registerCardId, string distance, string shotNumber, Score score)
+		{
+			Debug.WriteLine("Competition: {0}, Competitor: {1}, Distance: {2}, Shot Number: {3}, Score: {4}",
+				competitionId, registerCardId, distance, shotNumber, score);
+
+			using (var db = new QueensFinalDb())
+			{
+				var rc = db.RegisterCards.Find(registerCardId);
+
+				// bit of reflection to avoid huge case statement
+				var propName = distance
+					+ (shotNumber.StartsWith("S") ? "Sighter" : "Shot")
+					+ shotNumber.TrimStart(new[] {'S'});
+				var prop = typeof(RegisterCard).GetProperty(propName);
+				prop.SetValue(rc,score);
+
+				db.SaveChanges();
+				
+			}
+
+			Clients.All.RegisterShot(registerCardId.ToString(CultureInfo.InvariantCulture), shotNumber, score.ToString());
+		}
+
+		public void ConvertBothSighters(int competitionId, int registerCardId, string distance)
+		{
+
 		}
 	}
 }

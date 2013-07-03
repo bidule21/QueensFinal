@@ -18,7 +18,7 @@ namespace QueensFinal.Controllers
 
         public ActionResult Index()
         {
-            return View(db.Competitors.ToList());
+            return View(db.RegisterCards.ToList());
         }
 
         //
@@ -26,7 +26,7 @@ namespace QueensFinal.Controllers
 
         public ActionResult Details(int id = 0)
         {
-            Competitor competitor = db.Competitors.Find(id);
+            RegisterCard competitor = db.RegisterCards.Find(id);
             if (competitor == null)
             {
                 return HttpNotFound();
@@ -47,11 +47,11 @@ namespace QueensFinal.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Competitor competitor)
+        public ActionResult Create(RegisterCard competitor)
         {
             if (ModelState.IsValid)
             {
-                db.Competitors.Add(competitor);
+                db.RegisterCards.Add(competitor);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -64,7 +64,7 @@ namespace QueensFinal.Controllers
 
         public ActionResult Edit(int id = 0)
         {
-            Competitor competitor = db.Competitors.Find(id);
+            RegisterCard competitor = db.RegisterCards.Find(id);
             if (competitor == null)
             {
                 return HttpNotFound();
@@ -77,7 +77,7 @@ namespace QueensFinal.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Competitor competitor)
+        public ActionResult Edit(RegisterCard competitor)
         {
             if (ModelState.IsValid)
             {
@@ -93,7 +93,7 @@ namespace QueensFinal.Controllers
 
         public ActionResult Delete(int id = 0)
         {
-            Competitor competitor = db.Competitors.Find(id);
+            RegisterCard competitor = db.RegisterCards.Find(id);
             if (competitor == null)
             {
                 return HttpNotFound();
@@ -108,8 +108,8 @@ namespace QueensFinal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Competitor competitor = db.Competitors.Find(id);
-            db.Competitors.Remove(competitor);
+            RegisterCard competitor = db.RegisterCards.Find(id);
+            db.RegisterCards.Remove(competitor);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
