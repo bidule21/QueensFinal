@@ -84,7 +84,7 @@ namespace QueensFinal.Model
 			{
 				var pointsOff = 150 - BroughtForwardPoints;
 
-				foreach (var score in x900CountingShots.Union(x1000CountingShots))
+				foreach (var score in x900CountingShots.Concat(x1000CountingShots))
 				{
 					if (!score.HasValue)
 						continue;
