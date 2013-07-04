@@ -1,4 +1,5 @@
 ﻿@model QueensFinal.Model.Competition
+@using QueensFinal.Model
 
 @{
     ViewBag.Title = Model.Name;
@@ -14,53 +15,96 @@
 @*<input type="button" id="btnSort" value="Sort"/>*@
 
 <style>
-    td
-    {
-        border: 1px solid grey;
-    }
-
     #Grid .mix
     {
         opacity: 0;
         display: none;
     }
 
-    .register-card-container {
-        border: 1px solid #c0c0c0;
-        padding: 3px;
+    .register-card-container
+    {
+        border: 1px solid grey;
+        padding: 7px;
         margin-bottom: 5px;
     }
 
-    .competitor-name {
+    .competitor-name
+    {
         margin: 0;
+        /*display: inline-block;*/
+        float: left;
     }
 
-    .competitor-index-number {
+    .competitor-index-number
+    {
         color: #778899;
-        display: inline-block;
-        min-width: 2em;
-        text-align: right;
     }
-    .register-card-container th {
+
+    .register-card-container th
+    {
         font-weight: normal;
         text-align: center;
         font-size: 75%;
     }
 
-    .register-card-container td {
-        min-width: 1em;
+    .register-card-container td
+    {
+        border: 1px solid #c0c0c0;
+        min-width: 1.5em;
+        padding: 0 2px 0 2px;
+        text-align: center;
     }
+
+    .register-card-brought-forward
+    {
+        border: 1px solid #c0c0c0;
+        padding: 0 2px 0 2px;
+        display: inline-block;
+        margin-right: 5px;
+    }
+
+    .register-card-points-off
+    {
+        border: 1px solid #c0c0c0;
+        padding: 0 2px 0 2px;
+        font-weight: bold;
+    }
+
+    .register-card-grand-total
+    {
+        margin: 5px 5px 0 7px;
+        vertical-align: bottom;
+        float: right;
+    }
+
+    .register-card-grand-total-value
+    {
+        font-size: 150%;
+        text-align: center;
+    }
+
 </style>
 
 <div id="Grid">
     @foreach (var registerCard in Model.RegisterCards)
     {
-        <div class="mix register-card-container" id="registerCard@(registerCard.Id)" data-pointsoff="0" >
+        <div class="mix register-card-container" id="registerCard@(registerCard.Id)"
+            data-pointsoff="@(registerCard.SortOrder)" >
             <h3 class="competitor-name">
-                <span class="competitor-index-number">@registerCard.CompetitorIndexNumber</span>
+                <span class="competitor-index-number">@registerCard.CompetitorIndexNumber.ToString("000")</span>
                 @registerCard.CompetitorName
             </h3>
-            <table>
+            <div style="float: right">
+                <span>Brought Forward:</span>
+                <span id="registerCard@(registerCard.Id)BroughtForward" class="register-card-brought-forward">
+                    @(registerCard.BroughtForwardPoints).@(registerCard.BroughtForwardVs)v
+                </span>
+                <span>Points Off:</span>
+                <span id="registerCard@(registerCard.Id)PointsOff" class="register-card-points-off">
+                    @(registerCard.TotalPointsOff)
+                </span>
+            </div>
+            <table style="clear: both; float: left">
                 <tr>
                     <th></th>
                     <th>S1</th>
@@ -80,51 +124,60 @@
                     <th>13</th>
                     <th>14</th>
                     <th>15</th>
+                    <th>Total</th>
                 </tr>
                 <tr>
                     <td style="text-align: right">x900</td>
-                    <td id="registerCard@(registerCard.Id)x900shotS1"></td>
-                    <td id="registerCard@(registerCard.Id)x900shotS2"></td>
-                    <td id="registerCard@(registerCard.Id)x900shot1"></td>
-                    <td id="registerCard@(registerCard.Id)x900shot2"></td>
-                    <td id="registerCard@(registerCard.Id)x900shot3"></td>
-                    <td id="registerCard@(registerCard.Id)x900shot4"></td>
-                    <td id="registerCard@(registerCard.Id)x900shot5"></td>
-                    <td id="registerCard@(registerCard.Id)x900shot6"></td>
-                    <td id="registerCard@(registerCard.Id)x900shot7"></td>
-                    <td id="registerCard@(registerCard.Id)x900shot8"></td>
-                    <td id="registerCard@(registerCard.Id)x900shot9"></td>
-                    <td id="registerCard@(registerCard.Id)x900shot10"></td>
-                    <td id="registerCard@(registerCard.Id)x900shot11"></td>
-                    <td id="registerCard@(registerCard.Id)x900shot12"></td>
-                    <td id="registerCard@(registerCard.Id)x900shot13"></td>
-                    <td id="registerCard@(registerCard.Id)x900shot14"></td>
-                    <td id="registerCard@(registerCard.Id)x900shot15"></td>
-                    
+                    <td id="registerCard@(registerCard.Id)x900shotS1">@registerCard.x900Sighter1.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x900shotS2">@registerCard.x900Sighter2.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x900shot1">@registerCard.x900Shot1.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x900shot2">@registerCard.x900Shot2.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x900shot3">@registerCard.x900Shot3.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x900shot4">@registerCard.x900Shot4.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x900shot5">@registerCard.x900Shot5.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x900shot6">@registerCard.x900Shot6.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x900shot7">@registerCard.x900Shot7.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x900shot8">@registerCard.x900Shot8.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x900shot9">@registerCard.x900Shot9.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x900shot10">@registerCard.x900Shot10.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x900shot11">@registerCard.x900Shot11.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x900shot12">@registerCard.x900Shot12.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x900shot13">@registerCard.x900Shot13.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x900shot14">@registerCard.x900Shot14.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x900shot15">@registerCard.x900Shot15.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x900Total" style="min-width: 50px">@(registerCard.x900Total)</td>
+
                     @*<td><input type="text" id="registerCard@(registerCard.Id)PointsOff" value="0"/></td>*@
                 </tr>
                 <tr>
                     <td style="text-align: right">x1000</td>
-                    <td id="registerCard@(registerCard.Id)x1000shotS1"></td>
-                    <td id="registerCard@(registerCard.Id)x1000shotS2"></td>
-                    <td id="registerCard@(registerCard.Id)x1000shot1"></td>
-                    <td id="registerCard@(registerCard.Id)x1000shot2"></td>
-                    <td id="registerCard@(registerCard.Id)x1000shot3"></td>
-                    <td id="registerCard@(registerCard.Id)x1000shot4"></td>
-                    <td id="registerCard@(registerCard.Id)x1000shot5"></td>
-                    <td id="registerCard@(registerCard.Id)x1000shot6"></td>
-                    <td id="registerCard@(registerCard.Id)x1000shot7"></td>
-                    <td id="registerCard@(registerCard.Id)x1000shot8"></td>
-                    <td id="registerCard@(registerCard.Id)x1000shot9"></td>
-                    <td id="registerCard@(registerCard.Id)x1000shot10"></td>
-                    <td id="registerCard@(registerCard.Id)x1000shot11"></td>
-                    <td id="registerCard@(registerCard.Id)x1000shot12"></td>
-                    <td id="registerCard@(registerCard.Id)x1000shot13"></td>
-                    <td id="registerCard@(registerCard.Id)x1000shot14"></td>
-                    <td id="registerCard@(registerCard.Id)x1000shot15"></td>
+                    <td id="registerCard@(registerCard.Id)x1000shotS1">@registerCard.x1000Sighter1.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x1000shotS2">@registerCard.x1000Sighter2.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x1000shot1">@registerCard.x1000Shot1.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x1000shot2">@registerCard.x1000Shot2.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x1000shot3">@registerCard.x1000Shot3.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x1000shot4">@registerCard.x1000Shot4.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x1000shot5">@registerCard.x1000Shot5.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x1000shot6">@registerCard.x1000Shot6.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x1000shot7">@registerCard.x1000Shot7.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x1000shot8">@registerCard.x1000Shot8.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x1000shot9">@registerCard.x1000Shot9.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x1000shot10">@registerCard.x1000Shot10.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x1000shot11">@registerCard.x1000Shot11.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x1000shot12">@registerCard.x1000Shot12.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x1000shot13">@registerCard.x1000Shot13.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x1000shot14">@registerCard.x1000Shot14.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x1000shot15">@registerCard.x1000Shot15.DisplayValue()</td>
+                    <td id="registerCard@(registerCard.Id)x1000Total" style="min-width: 50px">@(registerCard.x1000Total)</td>
                 </tr>
             </table>
-            
+            <div class="register-card-grand-total">
+                Grand Total:
+                <div id="registerCard@(registerCard.Id)GrandTotal" class="register-card-grand-total-value">
+                    0.0v
+                </div>
+            </div>
+
         </div>
     }
 </div>
@@ -136,25 +189,9 @@
     <script src="~/Scripts/jquery-ui-1.8.24.js"></script>
     <script src="~/signalr/hubs"></script>
     <script>
-        function ScoreNameToNumber(score) {
-            switch (score) {
-                case "Zero":
-                    return "0";
-                case "One":
-                    return "1";
-                case "Two":
-                    return "2";
-                case "Three":
-                    return "3";
-                case "Four":
-                    return "4";
-                case "Five":
-                    return "5";
-                case "V":
-                    return "V";
-                default:
-                    return "";
-            }
+        
+        function CalculateTotalPointsOff(registerCard) {
+            //registerCard.find(""
         }
 
         function PointsOffFromScore(score) {
@@ -166,32 +203,43 @@
 
         $(function () {
             var hub = $.connection.queensFinalHub;
-            hub.client.RegisterShot = function (registerCardId, distance, shotNumber, score) {
-                var scoreNumber = ScoreNameToNumber(score);
 
-                var pointsOff = $('#registerCard' + registerCardId + 'PointsOff');
-                pointsOff.val(parseInt(pointsOff.val(), 10) + PointsOffFromScore(scoreNumber));
+            hub.client.RegisterShot = function (registerCardId, distance, shotNumber, score, totalPointsOff, x900Total, x1000Total) {
 
+                // Set the data-pointsoff attribute
                 var pointsOffAttr = $('#registerCard' + registerCardId);
-                pointsOffAttr.attr("data-pointsoff", parseInt(pointsOffAttr.attr("data-pointsoff"), 10) + PointsOffFromScore(scoreNumber));
+                pointsOffAttr.attr("data-pointsoff", totalPointsOff);
 
+                // Set points off display
+                var pointsOff = $('#registerCard' + registerCardId + 'PointsOff');
+                pointsOff.html(totalPointsOff);
+
+                // Set x900 total display
+                var cell = $('#registerCard' + registerCardId + 'x900Total');
+                cell.html(x900Total);
+
+                // Set x1000 total display
+                var cell = $('#registerCard' + registerCardId + 'x1000Total');
+                cell.html(x1000Total);
+
+                // Display shot score
                 var cell = $('#registerCard' + registerCardId + distance + 'shot' + shotNumber);
-                cell.html(scoreNumber);
-                cell.effect("highlight");
+                cell.html(score);
+                cell.effect("highlight", null, 2000);
 
-                //var position = CalculateNewPosition(registerCardId);
-
-                //MoveToNewPosition(position);
 
                 $('#Grid').mixitup('sort', ['data-pointsoff', 'desc']);
             };
+
             $.connection.hub.start();
 
             $('#Grid').mixitup();
 
-            $('#btnSort').click(function() {
-                $('#Grid').mixitup('sort', ['data-pointsoff', 'desc']);
-            });
+            $('#Grid').mixitup('sort', ['data-pointsoff', 'desc']);
+
+            //$('#btnSort').click(function () {
+            //    $('#Grid').mixitup('sort', ['data-pointsoff', 'desc']);
+            //});
 
         });
     </script>

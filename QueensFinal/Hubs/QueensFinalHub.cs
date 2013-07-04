@@ -84,10 +84,11 @@ namespace QueensFinal.Hubs
 				prop.SetValue(rc,score);
 
 				db.SaveChanges();
+
+				Clients.All.RegisterShot(registerCardId, distance, shotNumber, score.DisplayValue(),
+					rc.TotalPointsOff, rc.x900Total, rc.x1000Total);
 				
 			}
-
-			Clients.All.RegisterShot(registerCardId, distance, shotNumber, score.ToString());
 		}
 
 		public void ConvertBothSighters(int competitionId, int registerCardId, string distance)
