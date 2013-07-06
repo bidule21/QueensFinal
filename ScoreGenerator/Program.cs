@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.AspNet.SignalR.Client.Hubs;
@@ -9,7 +10,8 @@ namespace ScoreGenerator
 {
 	class Program
 	{
-		private const string HubUrl = "http://localhost:59570/";
+		private const string HubUrl = "http://queensfinal.azurewebsites.net/";
+		//private const string HubUrl = "http://localhost:/";
 		static private readonly Random Random = new Random();
 		static readonly Array Scores = Enum.GetValues(typeof(Score));
 
@@ -17,17 +19,17 @@ namespace ScoreGenerator
 		{
 			var hubConnection = new HubConnection(HubUrl) {TraceLevel = TraceLevels.All, TraceWriter = Console.Out};
 			var hubProxy = hubConnection.CreateHubProxy("QueensFinalHub");
-
+			ServicePointManager.DefaultConnectionLimit = 100;
 			hubConnection.Start().Wait();
 
-			Thread.Sleep(1000);
+			//Thread.Sleep(1000);
 
 			// Create a new Queens Final event
 			string competitionName = "QueensFinal - " + DateTime.Now.ToString(CultureInfo.InvariantCulture);
 			var competitionId = hubProxy.Invoke<int>("CreateCompetition", competitionName).Result;
 
 			// Create 20 register cards / competitors
-			var registerCards = Enumerable.Range(1, 20).Select(i => new RegisterCard
+			var registerCards = Enumerable.Range(1, 1).Select(i => new RegisterCard
 				{
 					CompetitorName = "Competitor" + i,
 					CompetitorIndexNumber = i,
@@ -58,7 +60,7 @@ namespace ScoreGenerator
 
 					for (int i = 1; i <= 2; i++)
 					{
-						Thread.Sleep(1000*Random.Next(90));
+						//Thread.Sleep(1000*Random.Next(20));
 
 						Console.WriteLine("AddShot - Competitor {0}, Shot {1}", competitor.CompetitorName, "S" + i);
 
@@ -73,7 +75,7 @@ namespace ScoreGenerator
 
 					for (int i = 1; i <= 15; i++)
 					{
-						Thread.Sleep(1000*Random.Next(90));
+						//Thread.Sleep(1000*Random.Next(20));
 
 						Console.WriteLine("AddShot - Competitor {0}, Shot {1}", competitor.CompetitorName, i);
 
@@ -84,6 +86,37 @@ namespace ScoreGenerator
 						                        "x900",
 						                        i.ToString(CultureInfo.InvariantCulture),
 						                        (Score) Scores.GetValue(Random.Next(Scores.Length))).Wait();
+					}
+
+					// x1000
+					for (int i = 1; i <= 2; i++)
+					{
+						Thread.Sleep(1000 * Random.Next(20));
+
+						Console.WriteLine("AddShot - Competitor {0}, Shot {1}", competitor.CompetitorName, "S" + i);
+
+						// RegisterScore(int competitionId, int competitorId, string shotNumber, string score)
+						parallelHubProxy.Invoke("AddShot",
+												competitionId,
+												competitor.RegisterCardId,
+												"x1000",
+												"S" + i,
+												(Score)Scores.GetValue(Random.Next(Scores.Length))).Wait();
+					}
+
+					for (int i = 1; i <= 15; i++)
+					{
+						Thread.Sleep(1000 * Random.Next(20));
+
+						Console.WriteLine("AddShot - Competitor {0}, Shot {1}", competitor.CompetitorName, i);
+
+						// RegisterScore(int competitionId, int competitorId, string shotNumber, string score)
+						parallelHubProxy.Invoke("AddShot",
+												competitionId,
+												competitor.RegisterCardId,
+												"x1000",
+												i.ToString(CultureInfo.InvariantCulture),
+												(Score)Scores.GetValue(Random.Next(Scores.Length))).Wait();
 					}
 
 					parallelHubConnection.Stop();

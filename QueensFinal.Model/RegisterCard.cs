@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -60,7 +61,7 @@ namespace QueensFinal.Model
 		{
 			get
 			{
-				var countingShotPropertyPattern = "x900Shot\\d+";
+				const string countingShotPropertyPattern = "x900Shot\\d+";
 				return GetType().GetProperties()
 					.Where(p => Regex.IsMatch(p.Name, countingShotPropertyPattern))
 					.Select(countingShot => (Score?)countingShot.GetValue(this));
@@ -71,7 +72,7 @@ namespace QueensFinal.Model
 		{
 			get
 			{
-				var countingShotPropertyPattern = "x1000Shot\\d+";
+				const string countingShotPropertyPattern = "x1000Shot\\d+";
 				return GetType().GetProperties()
 					.Where(p => Regex.IsMatch(p.Name, countingShotPropertyPattern))
 					.Select(countingShot => (Score?)countingShot.GetValue(this));
@@ -88,10 +89,9 @@ namespace QueensFinal.Model
 				{
 					if (!score.HasValue)
 						continue;
-					else if (score.Value == Score.V)
+					if (score.Value == Score.V)
 						continue;
-					else
-						pointsOff += 5 - (int)score.Value;
+					pointsOff += 5 - (int)score.Value;
 				}
 
 				return pointsOff;
@@ -102,23 +102,23 @@ namespace QueensFinal.Model
 		{
 			if (scores.Any(s => !s.HasValue))
 				return String.Empty;
-			else
-			{
-				var points = scores.Sum(s => (s == Score.V ? 5 : (int)s));
-				var vbulls = scores.Count(s => s == Score.V);
-				return points.ToString() + '.' + vbulls.ToString();
-			}
+			
+			var points = scores.Sum(s => (s == Score.V ? 5 : (int)s));
+			var vbulls = scores.Count(s => s == Score.V);
+			return points.ToString(CultureInfo.InvariantCulture) + '.' + vbulls.ToString(CultureInfo.InvariantCulture);
 		}
 
-		public string x900Total
+		public string x900Total { get { return RangeTotal(x900CountingShots); } }
+
+		public string x1000Total { get { return RangeTotal(x1000CountingShots); } }
+
+		public string GrandTotal
 		{
 			get
 			{
-				return RangeTotal(x900CountingShots);
+				
 			}
 		}
-
-		public string x1000Total { get { return RangeTotal(x1000CountingShots); } }
 
 		public int SortOrder
 		{
