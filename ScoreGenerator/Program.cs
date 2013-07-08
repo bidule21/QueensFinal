@@ -10,8 +10,8 @@ namespace ScoreGenerator
 {
 	class Program
 	{
-		private const string HubUrl = "http://queensfinal.azurewebsites.net/";
-		//private const string HubUrl = "http://localhost:/";
+		//private const string HubUrl = "http://queensfinal.azurewebsites.net/";
+		private const string HubUrl = "http://localhost:59570/";
 		static private readonly Random Random = new Random();
 		static readonly Array Scores = Enum.GetValues(typeof(Score));
 
@@ -25,7 +25,7 @@ namespace ScoreGenerator
 			//Thread.Sleep(1000);
 
 			// Create a new Queens Final event
-			string competitionName = "QueensFinal - " + DateTime.Now.ToString(CultureInfo.InvariantCulture);
+			string competitionName = "Queens Final - " + DateTime.Now.ToString("yyyyMMdd HHmmss", CultureInfo.InvariantCulture);
 			var competitionId = hubProxy.Invoke<int>("CreateCompetition", competitionName).Result;
 
 			// Create 20 register cards / competitors
@@ -91,7 +91,7 @@ namespace ScoreGenerator
 					// x1000
 					for (int i = 1; i <= 2; i++)
 					{
-						Thread.Sleep(1000 * Random.Next(20));
+						Thread.Sleep(1000 * Random.Next(2));
 
 						Console.WriteLine("AddShot - Competitor {0}, Shot {1}", competitor.CompetitorName, "S" + i);
 
@@ -106,7 +106,7 @@ namespace ScoreGenerator
 
 					for (int i = 1; i <= 15; i++)
 					{
-						Thread.Sleep(1000 * Random.Next(20));
+						Thread.Sleep(1000 * Random.Next(2));
 
 						Console.WriteLine("AddShot - Competitor {0}, Shot {1}", competitor.CompetitorName, i);
 

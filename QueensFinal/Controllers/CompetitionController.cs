@@ -22,7 +22,7 @@ namespace QueensFinal.Controllers
         }
 
         //
-        // GET: /Competition/Details/5
+        // GET: /Competition/Details/Queens Final 2013
 
         public ActionResult Details(string name)
         {

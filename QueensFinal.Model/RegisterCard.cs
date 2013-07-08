@@ -98,25 +98,53 @@ namespace QueensFinal.Model
 			}
 		}
 
-		public string RangeTotal<T>(T scores) where T : IEnumerable<Score?>
+		public string ScoreTotal<T>(T scores) where T : IEnumerable<Score?>
 		{
-			if (scores.Any(s => !s.HasValue))
-				return String.Empty;
-			
-			var points = scores.Sum(s => (s == Score.V ? 5 : (int)s));
-			var vbulls = scores.Count(s => s == Score.V);
-			return points.ToString(CultureInfo.InvariantCulture) + '.' + vbulls.ToString(CultureInfo.InvariantCulture);
+			return SumPoints(scores).ToString(CultureInfo.InvariantCulture) + '.' + SumVBulls(scores).ToString(CultureInfo.InvariantCulture);
 		}
 
-		public string x900Total { get { return RangeTotal(x900CountingShots); } }
+		public int SumPoints<T>(T scores) where T : IEnumerable<Score?>
+		{
+			return scores.Where(s => s.HasValue).Cast<Score>().Sum(s => (s == Score.V ? 5 : (int)s));
+		}
 
-		public string x1000Total { get { return RangeTotal(x1000CountingShots); } }
+		public int SumVBulls<T>(T scores) where T : IEnumerable<Score?>
+		{
+			return scores.Where(s => s.HasValue).Cast<Score>().Count(s => s == Score.V);
+		}
+
+		public string X900Total
+		{
+			get
+			{
+				if (x900CountingShots.Any(s => !s.HasValue))
+					return String.Empty;
+
+				return ScoreTotal(x900CountingShots);
+			}
+		}
+
+		public string X1000Total
+		{
+			get
+			{
+				if (x1000CountingShots.Any(s => !s.HasValue))
+					return String.Empty;
+
+				return ScoreTotal(x1000CountingShots);
+			}
+		}
 
 		public string GrandTotal
 		{
 			get
 			{
-				
+				var scores = x900CountingShots.Concat(x1000CountingShots).ToList();
+				if (scores.Any(s => !s.HasValue))
+					return String.Empty;
+				return (BroughtForwardPoints + SumPoints(scores)).ToString(CultureInfo.InvariantCulture)
+					+ "."
+					+ (BroughtForwardVs + SumVBulls(scores).ToString(CultureInfo.InvariantCulture));
 			}
 		}
 
@@ -145,10 +173,7 @@ namespace QueensFinal.Model
 	{
 		public static string DisplayValue(this Score? score)
 		{
-			if (score.HasValue)
-				return score.Value.DisplayValue();
-			else
-				return String.Empty;
+			return score.HasValue ? score.Value.DisplayValue() : String.Empty;
 		}
 
 		public static string DisplayValue(this Score score)

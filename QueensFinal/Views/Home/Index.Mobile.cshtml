@@ -1,0 +1,12 @@
+﻿@model IEnumerable<QueensFinal.Model.Competition>
+
+@{
+    ViewBag.Title = "Queen's Final";
+}
+
+<ul data-role="listview">
+    @foreach (var competition in Model)
+    {
+        <li>@Html.ActionLink(competition.Name, "Details", "Competition", new { name = competition.Name }, null)</li>
+    }
+</ul>

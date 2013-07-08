@@ -86,7 +86,7 @@ namespace QueensFinal.Hubs
 				db.SaveChanges();
 
 				Clients.All.RegisterShot(registerCardId, distance, shotNumber, score.DisplayValue(),
-					rc.TotalPointsOff, rc.x900Total, rc.x1000Total);
+					rc.TotalPointsOff, rc.X900Total, rc.X1000Total, rc.GrandTotal);
 				
 			}
 		}
