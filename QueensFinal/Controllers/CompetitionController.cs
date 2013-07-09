@@ -119,5 +119,10 @@ namespace QueensFinal.Controllers
             db.Dispose();
             base.Dispose(disposing);
         }
+
+	    public ActionResult AddShooter(int id)
+	    {
+		    return View();
+	    }
     }
 }
